@@ -1,12 +1,25 @@
-async function getImages() {
-  try {
-    const fetchResult = await fetchImages();
+import { Dispatch } from "redux";
+import { imagesAction } from "./imagesSlice";
 
-    console.log(fetchResult);
-  } catch (error) {}
-}
+export const getImages = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(imagesAction.setIsLoading(true));
+      const fetchResult = await fetchImages();
 
-export default getImages;
+      if (fetchResult.data.length === 0) {
+        dispatch(imagesAction.setIsLoading(false));
+        throw new Error("Doesn't have Images");
+      }
+
+      dispatch(imagesAction.setImages(fetchResult.data));
+      dispatch(imagesAction.setIsLoading(false));
+    } catch (error: any) {
+      dispatch(imagesAction.setIsLoading(false));
+      dispatch(imagesAction.setError(error.message));
+    }
+  };
+};
 
 async function fetchImages() {
   const response = await fetch(
