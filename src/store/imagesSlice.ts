@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction, combineReducers } from "@reduxjs/toolkit";
+import { Image } from "components/interfaces";
 
 interface ImagesState {
-  images: any[];
+  images: Image[];
   isLoadingImages: boolean;
   error: string | null;
 }
