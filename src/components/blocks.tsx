@@ -2,11 +2,10 @@ import { PropsBlocks } from "./memoBlock/types";
 import { Image } from "./interfaces";
 import styled from "styled-components";
 
+const ImgBlock = styled.div<{ isSelected: boolean }>`
+  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
+`;
 function Blocks(props: PropsBlocks) {
-  const ImgBlock = styled.div<{ isSelected: boolean }>`
-    display: ${({ isSelected }) => (isSelected ? "block" : "none")};
-  `;
-
   return (
     <>
       {props.images.map((image: Image) => (
