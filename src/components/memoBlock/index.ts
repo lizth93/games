@@ -47,7 +47,7 @@ export default styled(MemoBlock)`
     }
 
     &-back {
-      background-color: #ef626c;
+      background-color: #63e6be;
       transform: rotateY(180deg);
       box-shadow: 5px 5px 10px 0px rgb(0 0 0 / 50%);
       display: flex;
@@ -57,7 +57,7 @@ export default styled(MemoBlock)`
     }
 
     &-front {
-      background-color: #84dccf;
+      background-color: #5c940d;
     }
   }
   .flipped {
