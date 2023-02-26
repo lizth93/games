@@ -13,7 +13,7 @@ interface BlocksProps {
   }) => void;
 }
 
-function Blocks(props: any) {
+function Blocks(props: BlocksProps) {
   console.log(props, "luz props the blocks");
 
   if (!props.memoBlocks) {
