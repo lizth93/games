@@ -8,8 +8,14 @@ import Blocks from "components/blocks";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
-  const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<any>([]);
-  const [selectedBlock, setSelectedBlock] = useState<any>();
+  const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<
+    { index: number; image: Image; flipped: boolean }[]
+  >([]);
+  const [selectedBlock, setSelectedBlock] = useState<{
+    index: number;
+    image: Image;
+    flipped: boolean;
+  } | null>(null);
   const [isAnimating, setAnimating] = useState(false);
 
   useEffect(() => {
@@ -38,7 +44,11 @@ function MemoBlock(props: Props): JSX.Element {
     return images.slice().sort(() => 0.5 - Math.random());
   }
 
-  function handleClick(memoBlock: any) {
+  function handleClick(memoBlock: {
+    index: number;
+    image: Image;
+    flipped: boolean;
+  }) {
     console.log(memoBlock, "what memoblock have");
     const flippedBlock = { ...memoBlock, flipped: true };
     let shuffledMemoBlockDuplicated = [...shuffledMemoBlocks];
@@ -47,8 +57,6 @@ function MemoBlock(props: Props): JSX.Element {
 
     if (selectedBlock === null || !selectedBlock) {
       setSelectedBlock(memoBlock);
-
-      console.log(memoBlock, "memoblock luz ");
     } else if (selectedBlock && selectedBlock.image === memoBlock.image) {
       setSelectedBlock(null);
     } else {
