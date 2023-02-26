@@ -5,12 +5,14 @@ interface ImagesState {
   images: Image[];
   isLoadingImages: boolean;
   error: string | null;
+  idFirsImage: string | null;
 }
 
 const initialState: ImagesState = {
   images: [],
   isLoadingImages: true,
   error: null,
+  idFirsImage: null,
 };
 
 const imagesSlice = createSlice({
@@ -25,6 +27,9 @@ const imagesSlice = createSlice({
     },
     setError(state, action: PayloadAction<string>) {
       state.error = action.payload;
+    },
+    setFirstImage(state, action: PayloadAction<string>) {
+      state.idFirsImage = action.payload;
     },
   },
 });

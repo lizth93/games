@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "store";
 import { getImages } from "store/getImages";
@@ -8,12 +8,9 @@ import Blocks from "components/blocks";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
-  const [randomizedImages, setRandomizedImages] = useState<Image[]>([]);
-  const [duplicatedImages, setDuplicatedImages] = useState<Image[]>([]);
-  const [isFirstTime, setIsFirstTime] = useState(true);
-  const [idImageSelected, setIdImageSelected] = useState("");
-  const [categorySelected, setcategorySelected] = useState("");
-  const [isShowImg, setShowImg] = useState(false);
+  const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<any>([]);
+  const [selectedBlock, setSelectedBlock] = useState<any>();
+  const [isAnimating, setAnimating] = useState(false);
 
   useEffect(() => {
     dispatch(getImages());
@@ -24,50 +21,60 @@ function MemoBlock(props: Props): JSX.Element {
     isLoadingImages: state.imagesCollection.isLoadingImages,
   }));
 
+  useEffect(() => {
+    if (images) {
+      const shuffledImages = sortImages([...images, ...images]);
+      setShuffledMemoBlocks(
+        shuffledImages.map((image, i) => ({ index: i, image, flipped: false }))
+      );
+    }
+  }, [images]);
+
   if (isLoadingImages) {
     return <p>Please Wait</p>;
-  }
-  if (isFirstTime) {
-    const newRandomizedImages = sortImages(images);
-    setRandomizedImages(newRandomizedImages);
-
-    const duplicatedImages = sortImages(images);
-    setDuplicatedImages(duplicatedImages);
-    setIsFirstTime(false);
   }
 
   function sortImages(images: Image[]) {
     return images.slice().sort(() => 0.5 - Math.random());
   }
 
-  function handleClick(id: string, category: string) {
-    console.log(id, "click", category);
-    setShowImg(true);
-    setIdImageSelected(id);
-    setcategorySelected(category);
-    if (idImageSelected === id) {
-      alert("iguales");
-      setIdImageSelected("");
+  function handleClick(memoBlock: any) {
+    console.log(memoBlock, "what memoblock have");
+    const flippedBlock = { ...memoBlock, flipped: true };
+    let shuffledMemoBlockDuplicated = [...shuffledMemoBlocks];
+    shuffledMemoBlockDuplicated.splice(memoBlock.index, 1, flippedBlock);
+    setShuffledMemoBlocks(shuffledMemoBlockDuplicated);
+
+    if (selectedBlock === null || !selectedBlock) {
+      setSelectedBlock(memoBlock);
+
+      console.log(memoBlock, "memoblock luz ");
+    } else if (selectedBlock && selectedBlock.image === memoBlock.image) {
+      setSelectedBlock(null);
+    } else {
+      setAnimating(true);
+
+      setTimeout(() => {
+        if (selectedBlock) {
+          shuffledMemoBlockDuplicated.splice(memoBlock.index, 1, memoBlock);
+          shuffledMemoBlockDuplicated.splice(
+            selectedBlock.index,
+            1,
+            selectedBlock
+          );
+          setShuffledMemoBlocks(shuffledMemoBlockDuplicated);
+          setSelectedBlock(null);
+          setAnimating(false);
+        }
+      }, 1000);
     }
   }
   return (
     <div className={`${props.className} content`}>
       <Blocks
-        images={randomizedImages}
+        memoBlocks={shuffledMemoBlocks}
+        animating={isAnimating}
         handleClick={handleClick}
-        isShowImg={isShowImg}
-        idImageSelected={idImageSelected}
-        category="1"
-        categorySelected={categorySelected}
-      />
-
-      <Blocks
-        images={duplicatedImages}
-        handleClick={handleClick}
-        isShowImg={isShowImg}
-        idImageSelected={idImageSelected}
-        category="2"
-        categorySelected={categorySelected}
       />
     </div>
   );

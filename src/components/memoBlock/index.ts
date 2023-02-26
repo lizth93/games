@@ -20,22 +20,47 @@ export default styled(MemoBlock)`
 
     position: relative;
     display: inline-block;
-  }
-  .image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000; /* color que desees */
-    opacity: 0.5; /* opacidad del color que cubre la imagen */
-    transition: opacity 0.5s ease; /* transición para suavizar el cambio de opacidad */
-  }
-  .hide {
-    display: none;
-  }
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
 
-  /* .selected + .image-overlay {
-    display: none;
-  } */
+    &-front,
+    &-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 4px;
+    }
+
+    &-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    &-flipped {
+      transform: rotateY(180deg);
+    }
+
+    &-back {
+      background-color: #ef626c;
+      transform: rotateY(180deg);
+      box-shadow: 5px 5px 10px 0px rgb(0 0 0 / 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 55px;
+    }
+
+    &-front {
+      background-color: #84dccf;
+    }
+  }
+  .flipped {
+    transform: rotateY(180deg);
+  }
 `;

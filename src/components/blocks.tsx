@@ -1,37 +1,34 @@
-import { PropsBlocks } from "./memoBlock/types";
-import { Image } from "./interfaces";
-import styled from "styled-components";
+function Blocks(props: any) {
+  console.log(props.memoBlocks, "luz inside the blocks");
 
-const ImgBlock = styled.div<{ isSelected: boolean }>`
-  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
-`;
-function Blocks(props: PropsBlocks) {
+  if (!props.memoBlocks) {
+    return <p>please wait luz</p>;
+  }
   return (
     <>
-      {props.images.map((image: Image) => (
-        <ImgBlock
-          className={`img-block`}
-          key={`${image.id}-${props.category}`}
-          onClick={() => props.handleClick(image.id, props.category)}
-          isSelected={
-            props.idImageSelected === image.id &&
-            props.category === props.categorySelected
+      {props.memoBlocks.map((memoBlock: any, i: any) => (
+        <div
+          key={i}
+          className="img-block"
+          onClick={() =>
+            !memoBlock.flipped &&
+            !props.animating &&
+            props.handleClick(memoBlock)
           }
         >
-          <div className="image-overlay" />
-          <img
-            className={`img-block hide `}
-            src={image.featured_gif.images.fixed_height_small.url}
-            alt={image.display_name}
-            style={{
-              display:
-                props.idImageSelected === image.id &&
-                props.category === props.categorySelected
-                  ? "block"
-                  : "none",
-            }}
-          />
-        </ImgBlock>
+          <div
+            className={`img-block-inner ${
+              memoBlock.flipped && "img-block-flipped"
+            }`}
+          >
+            <div className="img-block-front"></div>
+            <img
+              className="img-block-back"
+              src={memoBlock.image.featured_gif.images.fixed_height_small.url}
+              alt={memoBlock.image.display_name}
+            ></img>
+          </div>
+        </div>
       ))}
     </>
   );
