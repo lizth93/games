@@ -11,7 +11,7 @@ export default styled(MemoBlock)`
   margin-top: 2rem;
 
   @media screen and (max-width: 55.6em) {
-    //890px
+    // 55.6em = 890px
     margin-top: 1rem;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -30,7 +30,7 @@ export default styled(MemoBlock)`
     aspect-ratio: 1 / 1;
 
     @media screen and (max-width: 25em) {
-      //400px
+      //25em = 400px
       gap: 1px;
       width: 80px;
       height: 80px;
