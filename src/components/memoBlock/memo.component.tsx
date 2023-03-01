@@ -49,7 +49,6 @@ function MemoBlock(props: Props): JSX.Element {
     image: Image;
     flipped: boolean;
   }) {
-    console.log(memoBlock, "what memoblock have");
     const flippedBlock = { ...memoBlock, flipped: true };
     let shuffledMemoBlockDuplicated = [...shuffledMemoBlocks];
     shuffledMemoBlockDuplicated.splice(memoBlock.index, 1, flippedBlock);

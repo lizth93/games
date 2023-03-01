@@ -2,14 +2,20 @@ import styled from "styled-components";
 import MemoBlock from "./memo.component";
 
 export default styled(MemoBlock)`
-  margin-top: 2rem;
   margin: auto;
   max-width: fit-content;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 2px;
+  margin-top: 2rem;
 
+  @media screen and (max-width: 55.6em) {
+    //890px
+    margin-top: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+  }
   .img-block {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
       rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
@@ -22,6 +28,19 @@ export default styled(MemoBlock)`
     display: inline-block;
     cursor: pointer;
     aspect-ratio: 1 / 1;
+
+    @media screen and (max-width: 25em) {
+      //400px
+      gap: 1px;
+      width: 80px;
+      height: 80px;
+    }
+
+    @media screen and (max-width: 20.6em) {
+      gap: 1px;
+      width: 70px;
+      height: 70px;
+    }
 
     &-front,
     &-back {
