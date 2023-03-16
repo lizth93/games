@@ -5,6 +5,7 @@ import { getImages } from "store/getImages";
 import { Props, Image } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
+import Title from "components/title/index";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
@@ -77,13 +78,16 @@ function MemoBlock(props: Props): JSX.Element {
     }
   }
   return (
-    <div className={`${props.className} content`}>
-      <Blocks
-        memoBlocks={shuffledMemoBlocks}
-        animating={isAnimating}
-        handleClick={handleClick}
-      />
-    </div>
+    <>
+      <Title>MemoBlocks Game!</Title>
+      <div className={`${props.className} content`}>
+        <Blocks
+          memoBlocks={shuffledMemoBlocks}
+          animating={isAnimating}
+          handleClick={handleClick}
+        />
+      </div>
+    </>
   );
 }
 export default MemoBlock;
