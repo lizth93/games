@@ -5,6 +5,7 @@ import { getImages } from "store/getImages";
 import { Props, Image } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
+import RadioButtons from "components/radioButtons";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
@@ -76,13 +77,18 @@ function MemoBlock(props: Props): JSX.Element {
       }, 1000);
     }
   }
+
+  const levels = ["3x3", "3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
   return (
-    <div className={`${props.className} content`}>
-      <Blocks
-        memoBlocks={shuffledMemoBlocks}
-        animating={isAnimating}
-        handleClick={handleClick}
-      />
+    <div className="ppal-container">
+      <RadioButtons levels={levels} />
+      <div className={`${props.className} content`}>
+        <Blocks
+          memoBlocks={shuffledMemoBlocks}
+          animating={isAnimating}
+          handleClick={handleClick}
+        />
+      </div>
     </div>
   );
 }
