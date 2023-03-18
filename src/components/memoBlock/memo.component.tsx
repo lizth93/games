@@ -5,7 +5,7 @@ import { getImages } from "store/getImages";
 import { Props, Image } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
-import Title from "components/title/index";
+import Title from "components/title";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
