@@ -7,15 +7,15 @@ function RadioButtons(props: Props) {
   return (
     <Form>
       <div key={`inline-radio`} className="mb-3">
-        {props.levels.map((l: string, index: number) => {
+        {props.levels.map((l: string, i: number) => {
           return (
             <Form.Check
-              key={index}
+              key={i}
               inline
               label={l}
               name={`group1`}
               type="radio"
-              id={`inline-radio-${index}`}
+              id={`inline-radio-${i}`}
               onClick={() => props.onClick(l)}
             />
           );
