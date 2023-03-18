@@ -11,6 +11,7 @@ interface Level {
   row: number;
   col: number;
 }
+const levels = ["3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
@@ -35,26 +36,26 @@ function MemoBlock(props: Props): JSX.Element {
   }));
 
   useEffect(() => {
+    if (images) {
+      const { row, col } = selectedLevel;
+      const shuffledImages = getImages(row, col);
+      const sortedImages = sortImages(shuffledImages);
+      setShuffledMemoBlocks(
+        sortedImages.map((image, i) => ({ index: i, image, flipped: false }))
+      );
+    }
+
     function getImages(rows: number, cols: number): Image[] {
       const totalImages = (rows * cols) / 2;
-      let shuffledImages = images
-        .slice()
-        .sort(() => 0.5 - Math.random())
-        .slice(0, totalImages);
+      let shuffledImages = sortImages(images).slice(0, totalImages);
       const duplicatedImages = [...shuffledImages, ...shuffledImages];
       return duplicatedImages;
     }
-
-    if (images) {
-      const { row, col } = selectedLevel;
-      const shuffledImages = getImages(row, col)
-        .slice()
-        .sort(() => 0.5 - Math.random());
-      setShuffledMemoBlocks(
-        shuffledImages.map((image, i) => ({ index: i, image, flipped: false }))
-      );
-    }
   }, [images, selectedLevel]);
+
+  function sortImages(images: Image[]) {
+    return images.slice().sort(() => 0.5 - Math.random());
+  }
 
   if (isLoadingImages) {
     return <p>Please Wait</p>;
@@ -93,19 +94,13 @@ function MemoBlock(props: Props): JSX.Element {
     }
   }
 
-  const levels = ["3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
-
-  const parseLevel = (level: string) => {
+  const handleSelectionLevels = (level: string) => {
     const [row, col] = level.split("*");
-    return {
+    const levels = {
       row: parseInt(row),
       col: parseInt(col),
     };
-  };
-
-  const handleSelectionLevels = (levels: string) => {
-    const convertedLevel = parseLevel(levels);
-    setSelectedLevel(convertedLevel);
+    setSelectedLevel(levels);
   };
 
   const gridTemplateColumns = `repeat(${selectedLevel.col}, 1fr)`;

@@ -5,8 +5,6 @@ export default styled(MemoBlock)`
   margin: auto;
   max-width: fit-content;
   display: grid;
-  /* grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(4, 1fr); */
   gap: 2px;
   margin-top: 2rem;
 
