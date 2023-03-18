@@ -7,11 +7,17 @@ import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
 import RadioButtons from "components/radioButtons";
 
+interface Level {
+  row: number;
+  col: number;
+}
+
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
   const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<
     { index: number; image: Image; flipped: boolean }[]
   >([]);
+  const [selectedLevel, setSelectedLevel] = useState<Level>({ row: 4, col: 8 });
   const [selectedBlock, setSelectedBlock] = useState<{
     index: number;
     image: Image;
@@ -29,20 +35,29 @@ function MemoBlock(props: Props): JSX.Element {
   }));
 
   useEffect(() => {
+    function getImages(rows: number, cols: number): Image[] {
+      const totalImages = (rows * cols) / 2;
+      let shuffledImages = images
+        .slice()
+        .sort(() => 0.5 - Math.random())
+        .slice(0, totalImages);
+      const duplicatedImages = [...shuffledImages, ...shuffledImages];
+      return duplicatedImages;
+    }
+
     if (images) {
-      const shuffledImages = sortImages([...images, ...images]);
+      const { row, col } = selectedLevel;
+      const shuffledImages = getImages(row, col)
+        .slice()
+        .sort(() => 0.5 - Math.random());
       setShuffledMemoBlocks(
         shuffledImages.map((image, i) => ({ index: i, image, flipped: false }))
       );
     }
-  }, [images]);
+  }, [images, selectedLevel]);
 
   if (isLoadingImages) {
     return <p>Please Wait</p>;
-  }
-
-  function sortImages(images: Image[]) {
-    return images.slice().sort(() => 0.5 - Math.random());
   }
 
   function handleClick(memoBlock: {
@@ -78,11 +93,31 @@ function MemoBlock(props: Props): JSX.Element {
     }
   }
 
-  const levels = ["3x3", "3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
+  const levels = ["3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
+
+  const parseLevel = (level: string) => {
+    const [row, col] = level.split("*");
+    return {
+      row: parseInt(row),
+      col: parseInt(col),
+    };
+  };
+
+  const handleSelectionLevels = (levels: string) => {
+    const convertedLevel = parseLevel(levels);
+    setSelectedLevel(convertedLevel);
+  };
+
+  const gridTemplateColumns = `repeat(${selectedLevel.col}, 1fr)`;
+  const gridTemplateRows = `repeat(${selectedLevel.row}, 1fr)`;
+
   return (
     <div className="ppal-container">
-      <RadioButtons levels={levels} />
-      <div className={`${props.className} content`}>
+      <RadioButtons levels={levels} onClick={handleSelectionLevels} />
+      <div
+        className={`${props.className} content`}
+        style={{ gridTemplateColumns, gridTemplateRows }}
+      >
         <Blocks
           memoBlocks={shuffledMemoBlocks}
           animating={isAnimating}

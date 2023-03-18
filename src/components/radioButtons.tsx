@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form";
 interface Props {
   levels: string[];
+  onClick: (level: string) => void;
 }
 function RadioButtons(props: Props) {
   return (
@@ -9,11 +10,13 @@ function RadioButtons(props: Props) {
         {props.levels.map((l: string, index: number) => {
           return (
             <Form.Check
+              key={index}
               inline
               label={l}
-              name={`group${index}`}
+              name={`group1`}
               type="radio"
               id={`inline-radio-${index}`}
+              onClick={() => props.onClick(l)}
             />
           );
         })}
