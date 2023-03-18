@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import cloneDeep from "lodash.clonedeep";
 import { AppDispatch } from "store";
 import { getImages } from "store/getImages";
 import { Props, Image } from "components/interfaces";
@@ -11,13 +12,18 @@ interface Level {
   row: number;
   col: number;
 }
+interface MemoBlock {
+  index: number;
+  image: Image;
+  flipped: boolean;
+}
+type MemoBlocks = MemoBlock[];
+
 const levels = ["3*4", "4*4", "4*5", "4*6", "4*7", "4*8"];
 
-function MemoBlock(props: Props): JSX.Element {
+function MemoBlockComponent(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
-  const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<
-    { index: number; image: Image; flipped: boolean }[]
-  >([]);
+  const [shuffledMemoBlocks, setShuffledMemoBlocks] = useState<MemoBlocks>([]);
   const [selectedLevel, setSelectedLevel] = useState<Level>({ row: 4, col: 8 });
   const [selectedBlock, setSelectedBlock] = useState<{
     index: number;
@@ -61,32 +67,64 @@ function MemoBlock(props: Props): JSX.Element {
     return <p>Please Wait</p>;
   }
 
-  function handleClick(memoBlock: {
-    index: number;
-    image: Image;
-    flipped: boolean;
-  }) {
-    const flippedBlock = { ...memoBlock, flipped: true };
-    let shuffledMemoBlockDuplicated = [...shuffledMemoBlocks];
-    shuffledMemoBlockDuplicated.splice(memoBlock.index, 1, flippedBlock);
-    setShuffledMemoBlocks(shuffledMemoBlockDuplicated);
+  function handleClick(memoBlock: MemoBlock) {
+    setShuffledMemoBlocks(
+      getSetWithMemoBlock(shuffledMemoBlocks, asFlipped(memoBlock))
+    );
 
-    if (selectedBlock === null || !selectedBlock) {
+    if (noneSelection()) {
       setSelectedBlock(memoBlock);
-    } else if (selectedBlock && selectedBlock.image === memoBlock.image) {
+    } else if (equalSelection()) {
+      // Pair selected, no need to keep tracking on it anymore.
       setSelectedBlock(null);
     } else {
+      flipAndResetSelection();
+    }
+
+    function getSetWithMemoBlock(memoBlocks: MemoBlocks, memoBlock: MemoBlock) {
+      memoBlocks = cloneDeep(memoBlocks);
+      memoBlocks.splice(memoBlock.index, 1, memoBlock);
+
+      return memoBlocks;
+    }
+
+    function asFlipped(memoBlock: MemoBlock) {
+      memoBlock = cloneDeep(memoBlock);
+      memoBlock.flipped = true;
+
+      return memoBlock;
+    }
+
+    function asNotFlipped(memoBlock: MemoBlock) {
+      memoBlock = asFlipped(memoBlock);
+      memoBlock.flipped = false;
+
+      return memoBlock;
+    }
+
+    function noneSelection() {
+      return selectedBlock === null || !selectedBlock;
+    }
+
+    function equalSelection() {
+      return selectedBlock && selectedBlock.image.id === memoBlock.image.id;
+    }
+
+    function flipAndResetSelection() {
       setAnimating(true);
 
       setTimeout(() => {
         if (selectedBlock) {
-          shuffledMemoBlockDuplicated.splice(memoBlock.index, 1, memoBlock);
-          shuffledMemoBlockDuplicated.splice(
-            selectedBlock.index,
-            1,
-            selectedBlock
+          let memoBlocksWithSelectionFlipped = getSetWithMemoBlock(
+            shuffledMemoBlocks,
+            asNotFlipped(memoBlock)
           );
-          setShuffledMemoBlocks(shuffledMemoBlockDuplicated);
+          memoBlocksWithSelectionFlipped = getSetWithMemoBlock(
+            memoBlocksWithSelectionFlipped,
+            asNotFlipped(selectedBlock)
+          );
+
+          setShuffledMemoBlocks(memoBlocksWithSelectionFlipped);
           setSelectedBlock(null);
           setAnimating(false);
         }
@@ -122,4 +160,4 @@ function MemoBlock(props: Props): JSX.Element {
     </div>
   );
 }
-export default MemoBlock;
+export default MemoBlockComponent;
