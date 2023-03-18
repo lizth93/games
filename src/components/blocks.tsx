@@ -14,8 +14,6 @@ interface BlocksProps {
 }
 
 function Blocks(props: BlocksProps) {
-  console.log(props, "luz props the blocks");
-
   if (!props.memoBlocks) {
     return <p>please wait luz</p>;
   }
