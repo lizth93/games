@@ -7,6 +7,7 @@ import { Props, Image } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
 import RadioButtons from "components/radioButtons";
+import Title from "components/title";
 
 interface Level {
   row: number;
@@ -145,7 +146,8 @@ function MemoBlockComponent(props: Props): JSX.Element {
   const gridTemplateRows = `repeat(${selectedLevel.row}, 1fr)`;
 
   return (
-    <div className="ppal-container">
+    <>
+      <Title>MemoBlocks Game!</Title>
       <RadioButtons levels={levels} onClick={handleSelectionLevels} />
       <div
         className={`${props.className} content`}
@@ -157,7 +159,7 @@ function MemoBlockComponent(props: Props): JSX.Element {
           handleClick={handleClick}
         />
       </div>
-    </div>
+    </>
   );
 }
 export default MemoBlockComponent;
