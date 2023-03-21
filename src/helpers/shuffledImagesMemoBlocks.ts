@@ -19,9 +19,10 @@ export const shuffledImagesMemoBlocks = (
 
 function getImages(rows: number, cols: number, images: Image[]): Image[] {
   const totalImages = (rows * cols) / 2;
-  let shuffledImages = sortImages(images).slice(0, totalImages);
+  let shuffledImages = images.slice(0, totalImages);
   const duplicatedImages = shuffledImages.flatMap((image) => [image, image]);
-  return duplicatedImages;
+  const sortedImages = sortImages(duplicatedImages);
+  return sortedImages;
 }
 
 function sortImages(images: Image[]) {
