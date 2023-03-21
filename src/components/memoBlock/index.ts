@@ -2,17 +2,19 @@ import styled from "styled-components";
 import MemoBlock from "./memo.component";
 
 export default styled(MemoBlock)`
-  margin: auto;
-  max-width: fit-content;
-  display: grid;
-  gap: 2px;
-  margin-top: 2rem;
+  .content {
+    margin: auto;
+    max-width: fit-content;
+    display: grid;
+    gap: 2px;
+    margin-top: 2rem;
 
-  // 55.6em = 890px
-  @media screen and (max-width: 55.6em) {
-    margin-top: 1rem;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    // 55.6em = 890px
+    @media screen and (max-width: 55.6em) {
+      margin-top: 1rem;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+    }
   }
 
   .img-block {
@@ -79,5 +81,10 @@ export default styled(MemoBlock)`
   }
   .flipped {
     transform: rotateY(180deg);
+  }
+
+  .levels-title {
+    font-size: 2rem;
+    color: white;
   }
 `;

@@ -127,11 +127,13 @@ function MemoBlockComponent(props: Props): JSX.Element {
   const gridTemplateRows = `repeat(${selectedLevel.row}, 1fr)`;
 
   return (
-    <>
+    <div className={props.className}>
       <Title>MemoBlocks Game!</Title>
+      <h2 className="levels-title"> Select level:</h2>
       <RadioButtons levels={levels} onClick={handleSelectionLevels} />
+
       <div
-        className={`${props.className} content`}
+        className={"content"}
         style={{ gridTemplateColumns, gridTemplateRows }}
       >
         <Blocks
@@ -140,7 +142,7 @@ function MemoBlockComponent(props: Props): JSX.Element {
           handleClick={handleClick}
         />
       </div>
-    </>
+    </div>
   );
 }
 export default MemoBlockComponent;
