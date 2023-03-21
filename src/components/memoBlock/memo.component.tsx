@@ -3,16 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import cloneDeep from "lodash.clonedeep";
 import { AppDispatch } from "store";
 import { getImages } from "store/getImages";
-import { Props, Image } from "components/interfaces";
+import { Props, Image, Level } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
 import RadioButtons from "components/radioButtons";
 import Title from "components/title";
+import { shuffledImagesMemoBlocks } from "helpers/shuffledImagesMemoBlocks";
 
-interface Level {
-  row: number;
-  col: number;
-}
 interface MemoBlock {
   index: number;
   image: Image;
@@ -44,25 +41,9 @@ function MemoBlockComponent(props: Props): JSX.Element {
 
   useEffect(() => {
     if (images) {
-      const { row, col } = selectedLevel;
-      const shuffledImages = getImages(row, col);
-      const sortedImages = sortImages(shuffledImages);
-      setShuffledMemoBlocks(
-        sortedImages.map((image, i) => ({ index: i, image, flipped: false }))
-      );
-    }
-
-    function getImages(rows: number, cols: number): Image[] {
-      const totalImages = (rows * cols) / 2;
-      let shuffledImages = sortImages(images).slice(0, totalImages);
-      const duplicatedImages = [...shuffledImages, ...shuffledImages];
-      return duplicatedImages;
+      setShuffledMemoBlocks(shuffledImagesMemoBlocks(selectedLevel, images));
     }
   }, [images, selectedLevel]);
-
-  function sortImages(images: Image[]) {
-    return images.slice().sort(() => 0.5 - Math.random());
-  }
 
   if (isLoadingImages) {
     return <p>Please Wait</p>;

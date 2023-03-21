@@ -13,3 +13,8 @@ export interface Image {
     };
   };
 }
+
+export interface Level {
+  row: number;
+  col: number;
+}

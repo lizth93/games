@@ -17,6 +17,7 @@ function RadioButtons(props: Props) {
               type="radio"
               id={`inline-radio-${i}`}
               onClick={() => props.onClick(l)}
+              style={{ color: "white" }}
             />
           );
         })}
