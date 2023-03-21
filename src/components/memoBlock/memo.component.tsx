@@ -6,6 +6,7 @@ import { Props, Image } from "components/interfaces";
 import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
 import Title from "components/title";
+import Button from "components/button";
 
 function MemoBlock(props: Props): JSX.Element {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
@@ -87,6 +88,7 @@ function MemoBlock(props: Props): JSX.Element {
           handleClick={handleClick}
         />
       </div>
+      <Button>New Game!</Button>
     </>
   );
 }
