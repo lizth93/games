@@ -1,8 +1,10 @@
 import Form from "react-bootstrap/Form";
+
 interface Props {
   levels: string[];
   onClick: (level: string) => void;
 }
+
 function RadioButtons(props: Props) {
   return (
     <Form>
@@ -13,7 +15,7 @@ function RadioButtons(props: Props) {
               key={i}
               inline
               label={l}
-              name={`group1`}
+              name="group"
               type="radio"
               id={`inline-radio-${i}`}
               onClick={() => props.onClick(l)}

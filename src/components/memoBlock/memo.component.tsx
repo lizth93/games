@@ -8,7 +8,7 @@ import { RootState } from "store/imagesSlice";
 import Blocks from "components/blocks";
 import RadioButtons from "components/radioButtons";
 import Title from "components/title";
-import { shuffledImagesMemoBlocks } from "helpers/shuffledImagesMemoBlocks";
+import { shuffleImageMemoryBlocks } from "helpers/shuffleImageMemoryBlocks";
 
 interface MemoBlock {
   index: number;
@@ -41,7 +41,7 @@ function MemoBlockComponent(props: Props): JSX.Element {
 
   useEffect(() => {
     if (images) {
-      setShuffledMemoBlocks(shuffledImagesMemoBlocks(selectedLevel, images));
+      setShuffledMemoBlocks(shuffleImageMemoryBlocks(selectedLevel, images));
     }
   }, [images, selectedLevel]);
 
@@ -114,14 +114,14 @@ function MemoBlockComponent(props: Props): JSX.Element {
     }
   }
 
-  const handleSelectionLevels = (level: string) => {
+  function handleSelectionLevels(level: string) {
     const [row, col] = level.split("*");
     const levels = {
       row: parseInt(row),
       col: parseInt(col),
     };
     setSelectedLevel(levels);
-  };
+  }
 
   const gridTemplateColumns = `repeat(${selectedLevel.col}, 1fr)`;
   const gridTemplateRows = `repeat(${selectedLevel.row}, 1fr)`;
@@ -133,7 +133,7 @@ function MemoBlockComponent(props: Props): JSX.Element {
       <RadioButtons levels={levels} onClick={handleSelectionLevels} />
 
       <div
-        className={"content"}
+        className="content"
         style={{ gridTemplateColumns, gridTemplateRows }}
       >
         <Blocks

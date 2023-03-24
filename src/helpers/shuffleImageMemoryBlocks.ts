@@ -1,9 +1,9 @@
 import { Image, Level } from "components/interfaces";
 
-export const shuffledImagesMemoBlocks = (
+export function shuffleImageMemoryBlocks(
   selectedLevel: Level,
   images: Image[]
-) => {
+) {
   const { row, col } = selectedLevel;
   const shuffledImages = getImages(row, col, images);
 
@@ -15,7 +15,7 @@ export const shuffledImagesMemoBlocks = (
   }));
 
   return shuffledMemoBlocks;
-};
+}
 
 function getImages(rows: number, cols: number, images: Image[]): Image[] {
   const totalImages = (rows * cols) / 2;
