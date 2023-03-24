@@ -9,11 +9,11 @@ export default styled(MemoBlock)`
     gap: 2px;
     margin-top: 2rem;
 
-    // 55.6em = 890px
-    @media screen and (max-width: 55.6em) {
+    // 51,8em = 890px
+    @media screen and (max-width: 51.8em) {
       margin-top: 1rem;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(8, 1fr);
+      grid-template-columns: repeat(4, 1fr) !important;
+      grid-template-rows: repeat(8, 1fr) !important;
     }
   }
 
