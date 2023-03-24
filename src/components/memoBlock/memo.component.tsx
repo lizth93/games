@@ -8,7 +8,7 @@ import Blocks from "components/blocks";
 import RadioButtons from "components/radioButtons";
 import Title from "components/title";
 import { shuffleImageMemoryBlocks } from "helpers/shuffleImageMemoryBlocks";
-import handleMemoBlockClick from "helpers/memoGameLogic";
+import memoGameLogic from "helpers/memoGameLogic";
 
 interface MemoBlock {
   index: number;
@@ -46,7 +46,7 @@ function MemoBlockComponent(props: Props): JSX.Element {
   }
 
   function handleClick(memoBlock: MemoBlock) {
-    handleMemoBlockClick({
+    memoGameLogic({
       memoBlock,
       shuffledMemoBlocks,
       selectedBlock,

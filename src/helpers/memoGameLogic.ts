@@ -17,7 +17,7 @@ interface Props {
   setAnimating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function handleMemoBlockClick({
+function memoGameLogic({
   memoBlock,
   shuffledMemoBlocks,
   selectedBlock,
@@ -89,4 +89,4 @@ function handleMemoBlockClick({
   }
 }
 
-export default handleMemoBlockClick;
+export default memoGameLogic;
